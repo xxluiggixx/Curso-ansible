@@ -1,0 +1,4 @@
+hostname,ip,distribucion,ram_mb,cpus
+{% for h in ansible_play_hosts %}
+{{ h }},{{ hostvars[h].ansible_default_ipv4.address }},{{ hostvars[h].ansible_distribution }},{{ hostvars[h].ansible_memtotal_mb }},{{ hostvars[h].ansible_processor_vcpus }}
+{% endfor %}

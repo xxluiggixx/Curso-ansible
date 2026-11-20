@@ -1,0 +1,9 @@
+<!DOCTYPE html>
+<html>
+  <head><title>{{ app_name }}</title></head>
+  <body>
+    <h1>{{ app_name }} - {{ env | default('dev') }}</h1>
+    <p>Servidor: {{ inventory_hostname }} ({{ ansible_distribution }} {{ ansible_distribution_version }})</p>
+    <p>Version: {{ app_version | default('1.0.0') }}</p>
+  </body>
+</html>

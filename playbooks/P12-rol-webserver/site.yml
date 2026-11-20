@@ -1,0 +1,8 @@
+- name: Apply webserver role
+  hosts: linux
+  become: true
+  roles:
+    - role: webserver
+      vars:
+        app_name: customer-api
+        env: prod

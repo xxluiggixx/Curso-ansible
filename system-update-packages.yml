@@ -1,0 +1,27 @@
+- hosts: all
+  become: true
+  become_user: root
+  become_method: sudo
+  tasks:
+
+    - name: Install system updates for centos systems
+      become: true
+      yum:
+        name: '*'
+        state: latest
+        update_cache: yes
+       #cache_valid_time: 3600
+      when:
+        - ansible_facts["os_family"] == "RedHat"
+        - ansible_facts["distribution"] == "CentOS"
+
+    - name: Install system updates for ubuntu systems
+      become: true
+      apt:
+        name: '*'
+        state: latest
+        update_cache: yes
+       #cache_valid_time: 3600
+      when:
+        - ansible_facts["os_family"] == "Debian"
+        - ansible_facts["distribution"] == "Ubuntu"
