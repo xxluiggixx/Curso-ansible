@@ -1,7 +1,5 @@
 # A02. Facts de un host
 
-> Ejecutar los comandos desde esta carpeta (el inventario está en `../../inventory.ini`).
-
 **Consigna:** mostrar la distribución y la memoria; luego filtrar solo `ansible_distribution*`.
 
 ```bash
