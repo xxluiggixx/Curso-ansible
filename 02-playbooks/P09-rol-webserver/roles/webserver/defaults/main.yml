@@ -1,0 +1,7 @@
+---
+web_port: 80
+web_root: /usr/share/nginx/html
+app_name: demo
+env: dev
+app_version: "1.0.0"
+web_manage_firewall: "{{ ansible_facts['os_family'] == 'RedHat' }}"

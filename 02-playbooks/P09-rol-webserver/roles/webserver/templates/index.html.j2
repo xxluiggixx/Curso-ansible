@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ app_name | e }}</title>
+  </head>
+  <body>
+    <h1>{{ app_name | e }} - {{ env | e }}</h1>
+    <p>Servidor: {{ inventory_hostname | e }} ({{ ansible_facts['distribution'] | e }} {{ ansible_facts['distribution_version'] | e }})</p>
+    <p>Versión: {{ app_version | e }}</p>
+  </body>
+</html>

@@ -1,0 +1,99 @@
+---
+- name: Validate web port
+  ansible.builtin.assert:
+    that:
+      - web_port | string is match('^[0-9]+$')
+      - web_port | int > 0
+      - web_port | int < 65536
+    fail_msg: web_port must be an integer between 1 and 65535.
+
+- name: Update package cache on Debian systems
+  ansible.builtin.apt:
+    update_cache: true
+    cache_valid_time: 3600
+  when: ansible_facts['os_family'] == 'Debian'
+
+- name: Install nginx
+  ansible.builtin.package:
+    name: nginx
+    state: present
+
+- name: Create document root
+  ansible.builtin.file:
+    path: "{{ web_root }}"
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Deploy web page
+  ansible.builtin.template:
+    src: index.html.j2
+    dest: "{{ web_root }}/index.html"
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Configure nginx
+  ansible.builtin.template:
+    src: nginx.conf.j2
+    dest: /etc/nginx/nginx.conf
+    owner: root
+    group: root
+    mode: '0644'
+    validate: /usr/sbin/nginx -t -c %s
+    backup: true
+  notify: Reload nginx
+
+- name: Enable and start nginx
+  ansible.builtin.service:
+    name: nginx
+    state: started
+    enabled: true
+
+- name: Configure firewalld
+  when: web_manage_firewall | bool
+  block:
+    - name: Install firewalld and Python bindings
+      ansible.builtin.package:
+        name:
+          - firewalld
+          - python3-firewall
+        state: present
+
+    - name: Enable and start firewalld
+      ansible.builtin.service:
+        name: firewalld
+        state: started
+        enabled: true
+
+    - name: Allow web traffic
+      ansible.posix.firewalld:
+        port: "{{ web_port }}/tcp"
+        permanent: true
+        immediate: true
+        state: enabled
+
+- name: Apply pending nginx configuration before verification
+  ansible.builtin.meta: flush_handlers
+
+- name: Verify website from control node
+  ansible.builtin.uri:
+    url: "http://{{ ansible_host | default(inventory_hostname) }}:{{ web_port }}/"
+    status_code: 200
+    return_content: true
+    use_proxy: false
+  delegate_to: localhost
+  become: false
+  register: web_response
+  until: web_response.status | default(0) == 200
+  retries: 5
+  delay: 2
+  when: not ansible_check_mode
+
+- name: Verify deployed application content
+  ansible.builtin.assert:
+    that:
+      - (app_name | string | e) in web_response.content
+      - (env | string | e) in web_response.content
+  when: not ansible_check_mode
