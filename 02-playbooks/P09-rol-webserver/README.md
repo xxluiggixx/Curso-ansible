@@ -1,7 +1,5 @@
 # P12. Rol `webserver`
 
-> Ejecutar los comandos desde esta carpeta (el inventario está en `../../inventory.ini`).
-
 *Temas: roles, defaults, templates, handlers.*
 
 **Consigna:** convertir P6 + P7 en un rol reutilizable.

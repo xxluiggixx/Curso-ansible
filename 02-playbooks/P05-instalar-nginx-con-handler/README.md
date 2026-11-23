@@ -1,7 +1,5 @@
 # P06. Instalar nginx (con handler)
 
-> Ejecutar los comandos desde esta carpeta (el inventario está en `../../inventory.ini`).
-
 *Temas: `package`, `service`, handlers, `firewalld`.*
 
 **Consigna:** instalar nginx, dejarlo habilitado e iniciado, abrir el puerto 80 y verificar con `uri` desde el control node. Reiniciar solo si cambió la configuración.
