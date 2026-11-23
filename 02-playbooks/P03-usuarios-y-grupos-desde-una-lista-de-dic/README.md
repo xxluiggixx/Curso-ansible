@@ -1,13 +1,20 @@
 # P03. Usuarios y grupos desde una lista de diccionarios
 
+[Volver al índice](../../README.md)
 
-*Temas: loop sobre dicts, `user`, `group`, `authorized_key` (opcional).*
+Crear `playbook.yml` en esta carpeta a partir del ejemplo. Ejecutar desde aquí con el inventario de la [preparación](../../00-inventario-y-claves-ssh/README.md):
+
+```bash
+ansible-playbook -i ../../00-inventario-y-claves-ssh/inventory.ini playbook.yml
+```
+
+**Temas:** loop sobre dicts, `user`, `group`, `authorized_key` (opcional).
 
 **Consigna:** crear el grupo `devs` y los usuarios `ana`, `luis` y `maria` con shell y grupo `devs`; uno de ellos debe estar `absent`.
 
 ```yaml
 - name: Manage users
-  hosts: all
+  hosts: linux
   become: true
   vars:
     users:
@@ -33,13 +40,8 @@
         label: "{{ item.name }}"
 ```
 
-**Verificar**
+## Verificación
 
-```
-
+```bash
 ssh ansible@[ip target] "sudo cat /etc/group | grep devs"
 ```
-
-## Archivos de esta carpeta
-
-- `playbook.yml`

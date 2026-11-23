@@ -1,8 +1,19 @@
-# P07. Desplegar una página web con template
+# P06. Desplegar una página web con template
 
-*Temas: `template`, Jinja2, `default()`, variables, handlers.*
+[Volver al índice](../../README.md)
+
+Crear `playbook.yml` en esta carpeta a partir del ejemplo. Ejecutar desde aquí con el inventario de la [preparación](../../00-inventario-y-claves-ssh/README.md):
+
+```bash
+ansible-playbook -i ../../00-inventario-y-claves-ssh/inventory.ini playbook.yml
+```
+
+**Consigna:** desplegar una página HTML usando la plantilla incluida y personalizarla con variables.
+
+**Temas:** `template`, Jinja2, `default()`, variables, handlers.
 
 `templates/index.html.j2`:
+
 ```html
 <!DOCTYPE html>
 <html>
@@ -16,9 +27,10 @@
 ```
 
 `playbook.yml`:
+
 ```yaml
 - name: Deploy static website
-  hosts: all
+  hosts: linux
   become: true
   vars:
     app_name: customer-api
@@ -52,7 +64,6 @@
         state: reloaded
 ```
 
-## Archivos de esta carpeta
+## Archivos incluidos
 
-- `templates/index.html.j2`
-- `playbook.yml`
+- [`templates/index.html.j2`](templates/index.html.j2)

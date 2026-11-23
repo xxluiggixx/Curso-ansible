@@ -1,12 +1,20 @@
-# P09. Handlers y bloques `block/rescue/always`
+# P07. Handlers y bloques `block/rescue/always`
 
-*Temas: manejo de errores.*
+[Volver al índice](../../README.md)
+
+Usar `playbook.yml` en esta carpeta. Ejecutar desde aquí con el inventario de la [preparación](../../00-inventario-y-claves-ssh/README.md):
+
+```bash
+ansible-playbook -i ../../00-inventario-y-claves-ssh/inventory.ini playbook.yml
+```
+
+**Temas:** manejo de errores.
 
 **Consigna:** intentar instalar un paquete inexistente (`paquete-que-no-existe`); si falla, registrar un mensaje con `debug` e instalar `htop` como alternativa; al final (`always`) escribir `/tmp/resultado.txt` con la fecha.
 
 ```yaml
 - name: Error handling with blocks
-  hosts: all
+  hosts: linux
   become: true
   tasks:
     - block:
@@ -30,7 +38,6 @@
             mode: '0644'
 ```
 
+## Archivos incluidos
 
-## Archivos de esta carpeta
-
-- `playbook.yml`
+- [`playbook.yml`](playbook.yml)

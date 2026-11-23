@@ -1,12 +1,20 @@
 # P02. Paquetes con variables y loop
 
-*Temas: `vars`, `loop`, `package`, `become`, idempotencia.*
+[Volver al índice](../../README.md)
+
+Crear `playbook.yml` en esta carpeta a partir del ejemplo. Ejecutar desde aquí con el inventario de la [preparación](../../00-inventario-y-claves-ssh/README.md):
+
+```bash
+ansible-playbook -i ../../00-inventario-y-claves-ssh/inventory.ini playbook.yml
+```
+
+**Temas:** `vars`, `loop`, `package`, `become`, idempotencia.
 
 **Consigna:** instalar la lista `packages` (`git`, `curl`, `unzip`) usando una sola task. Ejecutar dos veces y explicar `changed` vs `ok`. Luego sobrescribir la lista con `-e '{"packages": ["vim","jq"]}'`.
 
 ```yaml
 - name: Install base packages
-  hosts: all
+  hosts: linux
   become: true
   vars:
     packages:
@@ -21,11 +29,11 @@
       loop: "{{ packages }}"
 ```
 
-**Alternativa con file var**
+## Alternativa con archivo de variables
 
 ```yaml
 - name: Install base packages
-  hosts: all
+  hosts: linux
   become: true
   vars_files:
     - packages.yml
@@ -36,16 +44,12 @@
         state: present
       loop: "{{ packages }}"
 ```
-Crear en el directorio el archivo packages.yml
-```yaml
 
+Crear `packages.yml` en el directorio del ejercicio:
+
+```yaml
 packages:
   - git
   - curl
   - unzip
-
 ```
-
-## Archivos de esta carpeta
-
-- `playbook.yml`

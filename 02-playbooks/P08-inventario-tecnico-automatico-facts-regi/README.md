@@ -1,6 +1,14 @@
-# P10. Inventario técnico automático (facts + `register`)
+# P08. Inventario técnico automático (facts + `register`)
 
-*Temas: facts, `template`, `delegate_to`, `lineinfile`/`copy`.*
+[Volver al índice](../../README.md)
+
+Crear `playbook.yml` en esta carpeta a partir del ejemplo. Ejecutar desde aquí con el inventario de la [preparación](../../00-inventario-y-claves-ssh/README.md):
+
+```bash
+ansible-playbook -i ../../00-inventario-y-claves-ssh/inventory.ini playbook.yml
+```
+
+**Temas:** facts, `template`, `delegate_to`, `lineinfile`/`copy`.
 
 **Consigna:** generar en el control node un archivo CSV `/tmp/inventario_tecnico.csv` con una línea por host: `hostname,ip,distribucion,ram_mb,cpus`. Pista: usar `template` con `delegate_to: localhost`, `run_once: true` y un `for` sobre `ansible_play_hosts` con `hostvars`.
 
@@ -11,21 +19,21 @@ hostname,ip,distribucion,ram_mb,cpus
 {% endfor %}
 ```
 
-```
+```yaml
 - name: Generate technical inventory
-  hosts: all
+  hosts: linux
   gather_facts: true
 
   tasks:
     - name: Generate CSV on control node
       ansible.builtin.template:
-        src: templates/inventario_tecnico.csv.j2
-        dest: ./inventario_tecnico.csv
+        src: templates/inventario.csv.j2
+        dest: /tmp/inventario_tecnico.csv
         mode: '0644'
       delegate_to: localhost
       run_once: true
 ```
 
-## Archivos de esta carpeta
+## Archivos incluidos
 
-- `templates/inventario.csv.j2`
+- [`templates/inventario.csv.j2`](templates/inventario.csv.j2)
