@@ -37,21 +37,14 @@ El inventario común queda en esta carpeta. Los demás ejercicios lo referencian
 Crear una clave dedicada, con el mismo nombre que usa el inventario:
 
 ```bash
-ssh-keygen -t ed25519 -f ~/.ssh/id_ansible
+ssh-keygen 
 ```
 
-Si la clave tiene una frase de paso, cargarla en el agente SSH de la sesión:
-
-```bash
-eval "$(ssh-agent -s)"
-ssh-add ~/.ssh/id_ansible
-```
 
 ## Paso 3. Copiar la clave pública a los nodos
 
 ```bash
-ssh-copy-id -i ~/.ssh/id_ansible.pub ansible@10.10.1.11
-ssh-copy-id -i ~/.ssh/id_ansible.pub ansible@10.10.1.12
+ssh-copy-id  ansible@10.10.1.11
 ```
 
 En la primera conexión se solicita confirmar la identidad del host y escribir la contraseña del usuario remoto.
@@ -59,8 +52,7 @@ En la primera conexión se solicita confirmar la identidad del host y escribir l
 ## Paso 4. Probar el acceso por clave
 
 ```bash
-ssh -i ~/.ssh/id_ansible ansible@10.10.1.11 hostname
-ssh -i ~/.ssh/id_ansible ansible@10.10.1.12 hostname
+ssh  ansible@10.10.1.11 hostname
 ```
 
 ## Paso 5. Adaptar el inventario INI
